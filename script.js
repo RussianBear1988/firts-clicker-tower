@@ -172,3 +172,77 @@ function updateAutoclickerPanel() {
 
 updateShop();
 updateAutoclickerPanel();
+
+function saveGame() {
+  const saveData = {
+    coins: player.coins,
+    clickPower: player.clickPower,
+    upgrades: upgrades.map(u => ({
+      level: u.level,
+      price: u.price,
+      value: u.value
+    })),
+    autoClickers: player.autoClickers.map(u => ({
+      count: u.count,
+      level: u.level,
+      canBeOpened: u.canBeOpened
+    })),
+    lastSave: Date.now()
+  };
+
+  localStorage.setItem('clickerSave', JSON.stringify(saveData));
+}
+
+
+function loadGame() {
+  const data = localStorage.getItem('clickerSave');
+  if (!data) return;
+
+  const save = JSON.parse(data);
+
+  // Восстанавливаем базовые параметры
+  player.coins = save.coins ?? 0;
+  player.clickPower = save.clickPower ?? 1;
+
+  // Восстанавливаем улучшения клика
+  upgrades.forEach((u, i) => {
+    if (!save.upgrades[i]) return;
+    u.level = save.upgrades[i].level;
+    u.price = save.upgrades[i].price;
+    u.value = save.upgrades[i].value;
+  });
+
+  // Восстанавливаем автокликеров
+  player.autoClickers.forEach((u, i) => {
+    if (!save.autoClickers[i]) return;
+    u.count = save.autoClickers[i].count;
+    u.level = save.autoClickers[i].level;
+    u.canBeOpened = save.autoClickers[i].canBeOpened;
+  });
+
+  // === ДОБАВЬ СЮДА расчет дохода за оффлайн ===
+  if (save.lastSave) {
+    const now = Date.now();
+    const elapsedSeconds = Math.floor((now - save.lastSave) / 1000);
+
+    let offlineIncome = 0;
+    player.autoClickers.forEach(unit => {
+      offlineIncome += unit.incomePerSecond * elapsedSeconds;
+    });
+
+    if (offlineIncome > 0) {
+      player.addCoins(offlineIncome);
+
+      // Сообщение покажем через 1 сек после загрузки интерфейса
+      setTimeout(() => {
+        alert(`С момента твоего последнего захода в игру твои слуги заработали ${offlineIncome} монет.`);
+      }, 1000);
+    }
+  }
+}
+
+
+setInterval(saveGame, 500); // каждые 10 секунд
+
+loadGame();
+updateCoinsDisplay();

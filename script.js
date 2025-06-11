@@ -235,14 +235,22 @@ function loadGame() {
 
       // Сообщение покажем через 1 сек после загрузки интерфейса
       setTimeout(() => {
-        alert(`С момента твоего последнего захода в игру твои слуги заработали ${offlineIncome} монет.`);
+        const popup = document.getElementById('offline-popup');
+        const message = document.getElementById('offline-message');
+        message.textContent = `С момента твоего последнего захода в игру твои слуги заработали ${offlineIncome} монет.`;
+        popup.classList.remove('hidden');
       }, 1000);
+
     }
   }
 }
 
+function closeOfflinePopup() {
+  document.getElementById('offline-popup').classList.add('hidden');
+}
 
-setInterval(saveGame, 500); // каждые 10 секунд
+
+setInterval(saveGame, 500); // каждые 0.5 секунды
 
 loadGame();
 updateCoinsDisplay();

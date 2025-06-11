@@ -2,6 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Башня Клика</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -38,6 +39,12 @@
   <script src="upgrades.js"></script>
   <script src="autoclickers.js"></script>
   <script src="script.js"></script>
+  <div id="offline-popup" class="popup hidden">
+    <div class="popup-content">
+      <p id="offline-message">Ваши слуги трудились во сне…</p>
+      <button onclick="closeOfflinePopup()">Понятно</button>
+    </div>
+  </div>
 
 </body>
 </html>

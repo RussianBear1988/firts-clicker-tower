@@ -22,39 +22,9 @@ class ClickUpgrade {
   }
 }
 
-class AutoClicker {
-  constructor({ name, baseIncome, basePrice }) {
-    this.name = name;
-    this.baseIncome = baseIncome;
-    this.basePrice = basePrice;
-    this.count = 0;
-    this.level = 1;
-    this.upgrades = [];
-  }
-
-  get incomePerSecond() {
-    return this.count * this.baseIncome * this.level;
-  }
-
-  get price() {
-    return Math.floor(this.basePrice * Math.pow(1.15, this.count));
-  }
-
-  buy() {
-    this.count++;
-  }
-
-  upgradeLevel() {
-    this.level++;
-  }
-}
-
 const upgrades = [
   new ClickUpgrade({ name: "Кожаная перчатка", type: "absolute", value: 1, price: 10, image: "glove.png" }),
-  new ClickUpgrade({ name: "Рунический перстень", type: "relative", value: 10, price: 100, image: "ring.png" })
+  new ClickUpgrade({ name: "Рунический перстень", type: "absolute", value: 5, price: 500, image: "ring.png" }),
+  new ClickUpgrade({ name: "Ожерелье на нитке", type: "absolute", value: 25, price: 5000, image: "neckless.png" })
 ];
 
-const autoUnits = [
-  new AutoClicker({ name: "Крестьянин", baseIncome: 1, basePrice: 50 }),
-  new AutoClicker({ name: "Лесник", baseIncome: 5, basePrice: 250 })
-];

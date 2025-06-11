@@ -36,6 +36,7 @@ function updateCoinsDisplay() {
   coinsDisplay.textContent = player.coins;
   updateShop();
   updateIncomeDisplay();
+  updateAutoclickerPanel();
 }
 
 
@@ -96,4 +97,78 @@ function updateShop() {
   });
 }
 
+const autoclickerList = document.getElementById('autoclicker-list');
+
+function updateAutoclickerPanel() {
+  autoclickerList.innerHTML = '';
+
+  player.autoClickers.forEach(unit => {
+  // Пропускаем, если ещё нельзя купить и ничего не куплено
+  if (unit.count === 0 && player.autoClickers.find(u => u.count > 0) && player.coins < unit.price) return;
+
+  const card = document.createElement('div');
+  card.className = 'autoclicker-card';
+
+  const name = document.createElement('h3');
+  name.textContent = unit.name;
+
+  const img = document.createElement('img');
+  img.src = `images/autoclickers/${unit.image}`;
+  img.alt = unit.name;
+  img.style.width = "48px";
+  img.style.height = "48px";
+  img.style.marginRight = "10px";
+
+  const info = document.createElement('div');
+  info.className = 'autoclicker-info';
+  info.innerHTML = `
+    Уровень: ${unit.level}<br>
+    Кол-во: ${unit.count}<br>
+    Доход: ${unit.incomePerSecond} / сек<br>
+    Стоимость: ${unit.price} монет
+  `;
+
+  const btns = document.createElement('div');
+  btns.className = 'autoclicker-buttons';
+
+  const buyBtn = document.createElement('button');
+  buyBtn.textContent = 'Купить';
+
+  const canAfford = player.coins >= unit.price;
+  buyBtn.disabled = !canAfford;
+  buyBtn.style.opacity = canAfford ? '1' : '0.5';
+  buyBtn.style.cursor = canAfford ? 'pointer' : 'not-allowed';
+
+  buyBtn.onclick = () => {
+    if (player.coins >= unit.price) {
+      player.coins -= unit.price;
+      unit.buy(); // ← здесь происходит переключение canBeOpened
+      updateCoinsDisplay();
+    }
+  };
+
+  const openBtn = document.createElement('button');
+  openBtn.textContent = 'Открыть';
+  openBtn.disabled = !unit.canBeOpened;
+  openBtn.style.opacity = unit.canBeOpened ? '1' : '0.5';
+  openBtn.style.cursor = unit.canBeOpened ? 'pointer' : 'not-allowed';
+
+  openBtn.onclick = () => {
+    if (unit.canBeOpened) {
+      alert(`Открывается меню улучшений для ${unit.name}`);
+    }
+  };
+
+  btns.appendChild(buyBtn);
+  btns.appendChild(openBtn);
+
+  card.appendChild(img);
+  card.appendChild(name);
+  card.appendChild(info);
+  card.appendChild(btns);
+  autoclickerList.appendChild(card);
+});
+}
+
 updateShop();
+updateAutoclickerPanel();

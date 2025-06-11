@@ -1,0 +1,20 @@
+# Системные
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Логи и временные
+*.log
+*.tmp
+
+# Node/npm (если будешь использовать)
+node_modules/
+dist/
+build/
+
+# Git
+.gitignore

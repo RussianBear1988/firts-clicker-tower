@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Башня Клика</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="scale-container">
+    <div class="game-wrapper">
+      <div class="game-area">
+        <div class="main-area">
+            <div class="tower-container">
+            <img src="images/tower_base.png" alt="Башня" id="tower" class="tower" draggable="false">
+            </div>
+             <div class="stats">Монеты: <span id="coins">0</span></div>
+             <div class="income-stats">Доход в секунду: <span id="income">0</span></div>
+        </div>
+
+            <div class="shop" id="shop">
+                <h2>Магазин улучшений</h2>
+                <div id="upgrade-list"></div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <script src="upgrades.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

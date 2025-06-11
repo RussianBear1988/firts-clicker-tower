@@ -1,0 +1,175 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #001f3f;
+  font-family: sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.scale-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+@media screen and (max-width: 800px), (max-height: 600px) {
+  .game-wrapper {
+    transform: scale(calc(100vw / 800));
+    transform-origin: top left;
+  }
+
+  .scale-container {
+    align-items: flex-start;
+  }
+}
+
+.game-wrapper {
+  width: 800px;
+  height: 600px;
+  background: url("images/background.jpg") no-repeat center center;
+  background-size: cover;
+  position: relative;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  border: 4px solid #88c0d0;
+}
+
+/* Основной контейнер с магазином и башней */
+.game-area {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+}
+
+/* Левая панель — магазин */
+.shop {
+  width: 260px;
+  height: 100%;
+  background-color: rgba(0,0,0,0.3);
+  color: #fff;
+  border-right: 2px solid #88c0d0;
+  padding: 10px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+/* Правая часть — основная сцена */
+.main-area {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Центр с башней */
+.tower-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-height: 400px;
+  overflow: hidden;
+}
+
+.tower {
+  max-height: 100%;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: auto;
+  transition: transform 0.1s ease;
+}
+
+.tower:active {
+  transform: scale(0.97);
+}
+
+.stats {
+  font-size: 22px;
+  color: #fff;
+  background-color: rgba(0,0,0,0.5);
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: fit-content;
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Стиль карточек улучшений */
+.upgrade-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #2e3440;
+  border: 2px solid #4c566a;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  opacity: 1;
+  transition: background-color 0.2s;
+}
+
+.upgrade-card.locked {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.upgrade-card img {
+  width: 64px;
+  height: 64px;
+  margin-right: 10px;
+}
+
+.upgrade-info {
+  flex: 1;
+}
+
+.upgrade-name {
+  font-weight: bold;
+}
+
+.upgrade-cost,
+.upgrade-level {
+  font-size: 14px;
+  color: #ccc;
+}
+
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+  pointer-events: auto;
+}
+.upgrade-bonus {
+  font-size: 13px;
+  color: #a3be8c;
+  margin-top: 4px;
+}
+
+.income-stats {
+  font-size: 16px;
+  color: #fff;
+  background-color: rgba(0,0,0,0.4);
+  padding: 6px 14px;
+  border-radius: 8px;
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+}

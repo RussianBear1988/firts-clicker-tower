@@ -7,7 +7,7 @@ const incomeDisplay = document.getElementById('income');
 const player = {
   coins: 0,
   clickPower: 1,
-  autoClickers: autoUnits,
+  autoClickers: autoClickers,
   addCoins(amount) {
     this.coins += amount;
     updateCoinsDisplay();
@@ -33,7 +33,7 @@ setInterval(() => {
 }, 1000);
 
 function updateCoinsDisplay() {
-  coinsDisplay.textContent = player.coins;
+  coinsDisplay.textContent = Math.floor(player.coins).toLocaleString("ru-RU");
   updateShop();
   updateIncomeDisplay();
   updateAutoclickerPanel();
@@ -45,8 +45,9 @@ function updateIncomeDisplay() {
   player.autoClickers.forEach(unit => {
     totalIncome += unit.incomePerSecond;
   });
-  incomeDisplay.textContent = totalIncome;
+  incomeDisplay.textContent = Math.floor(totalIncome); // округляем до целых вниз
 }
+
 
 
 function updateShop() {
@@ -88,7 +89,7 @@ function updateShop() {
     card.addEventListener('click', () => {
       if (player.coins >= upgrade.price) {
         player.coins -= upgrade.price;
-        upgrade.apply(player);
+        upgrade.buy();
         updateCoinsDisplay();
       }
     });

@@ -1,13 +1,15 @@
 class AutoClicker {
-  constructor({ name, baseIncome, basePrice, image }) {
+  constructor({ name, baseIncome, basePrice, image, priceGrowth, incomeGrowth }) {
     this.name = name;
     this.baseIncome = baseIncome;
     this.basePrice = basePrice;
     this.image = image;
     this.count = 0;
     this.level = 1;
-    this.upgrades = [];
-    this.canBeOpened = false; // 🔑 ← переменная для контроля доступа к «Открыть»
+    this.canBeOpened = false;
+
+    this.priceGrowth = priceGrowth ?? 1.15;
+    this.incomeGrowth = incomeGrowth ?? 1.1;
   }
 
   get incomePerSecond() {
@@ -15,14 +17,13 @@ class AutoClicker {
   }
 
   get price() {
-    return Math.floor(this.basePrice * Math.pow(1.15, this.count));
+    return Math.floor(this.basePrice * Math.pow(this.priceGrowth, this.count));
   }
 
   buy() {
     this.count++;
-    if (this.count >= 50) {
-      this.canBeOpened = true;
-    }
+    this.baseIncome *= this.incomeGrowth;
+    if (this.count >= 50) this.canBeOpened = true;
   }
 
   upgradeLevel() {
@@ -30,18 +31,21 @@ class AutoClicker {
   }
 }
 
-
-const autoUnits = [
+const autoClickers = [
   new AutoClicker({
     name: "Крестьянин",
     baseIncome: 1,
     basePrice: 1000,
-    image: "peasant.png"
+    image: "peasant.png",
+    priceGrowth: 1.12,
+    incomeGrowth: 1.05
   }),
   new AutoClicker({
-    name: "Лесники",
+    name: "Лесник",
     baseIncome: 5,
     basePrice: 5000,
-    image: "forester.png"
+    image: "forester.png",
+    priceGrowth: 1.18,
+    incomeGrowth: 1.1
   })
 ];

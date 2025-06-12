@@ -14,6 +14,12 @@
         <!-- Левая панель — улучшения клика -->
         <div class="shop" id="shop">
           <h2>Улучшения клика</h2>
+          <div class="buy-multiplier">
+            <button class="multiplier-btn" id="btn-mult-1" onclick="setBuyMultiplier(1)">×1</button>
+            <button class="multiplier-btn" id="btn-mult-5" onclick="setBuyMultiplier(5)">×5</button>
+            <button class="multiplier-btn" id="btn-mult-10" onclick="setBuyMultiplier(10)">×10</button>
+            <button class="multiplier-btn" id="btn-mult-max" onclick="setBuyMultiplier('max')">∞</button>
+          </div>
           <div id="upgrade-list"></div>
         </div>
 
@@ -45,6 +51,7 @@
       <button onclick="closeOfflinePopup()">Понятно</button>
     </div>
   </div>
+<div id="global-tooltip" class="tooltip" style="display: none;"></div>
 
 </body>
 </html>

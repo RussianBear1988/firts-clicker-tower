@@ -3,6 +3,9 @@ const tower = document.getElementById('tower');
 const shopElement = document.getElementById('upgrade-list');
 const incomeDisplay = document.getElementById('income');
 
+let buyMultiplier = 1;
+
+
 
 const player = {
   coins: 0,
@@ -58,6 +61,7 @@ function updateShop() {
 
     const card = document.createElement('div');
     card.className = 'upgrade-card';
+    shopElement.appendChild(card);
 
     const canAfford = player.coins >= upgrade.price;
     if (!canAfford) card.classList.add('locked');
@@ -87,12 +91,36 @@ function updateShop() {
     card.appendChild(info);
 
     card.addEventListener('click', () => {
-      if (player.coins >= upgrade.price) {
+  if (buyMultiplier === 'max') {
+    let bought = false;
+    while (player.coins >= upgrade.price) {
+      player.coins -= upgrade.price;
+      upgrade.buy();
+      bought = true;
+    }
+    if (!bought) showTooltipGlobal("Не хватает денег");
+  } else {
+    // симулируем предварительно, сможем ли купить точно N штук
+    let totalCost = 0;
+    for (let i = 0; i < buyMultiplier; i++) {
+      const price = Math.floor(upgrade.basePrice * Math.pow(upgrade.priceGrowth, upgrade.level + i));
+      totalCost += price;
+    }
+
+    if (player.coins >= totalCost) {
+      for (let i = 0; i < buyMultiplier; i++) {
         player.coins -= upgrade.price;
         upgrade.buy();
-        updateCoinsDisplay();
       }
-    });
+    } else {
+      showTooltipGlobal("Не хватает денег");
+    }
+  }
+
+  updateCoinsDisplay();
+});
+
+
 
     shopElement.appendChild(card);
   });
@@ -174,6 +202,20 @@ function updateAutoclickerPanel() {
 updateShop();
 updateAutoclickerPanel();
 
+function showTooltipGlobal(text) {
+  const tip = document.getElementById('global-tooltip');
+  if (!tip) return;
+
+  tip.textContent = text;
+  tip.style.display = 'block';
+  tip.style.opacity = '1';
+  tip.classList.remove('fade-out');
+
+  setTimeout(() => {
+    tip.style.display = 'none';
+  }, 1500);
+}
+
 function saveGame() {
   const saveData = {
     coins: player.coins,
@@ -194,6 +236,24 @@ function saveGame() {
   localStorage.setItem('clickerSave', JSON.stringify(saveData));
 }
 
+function setBuyMultiplier(value) {
+  buyMultiplier = value;
+
+  const buttons = document.querySelectorAll('.multiplier-btn');
+  buttons.forEach(btn => btn.classList.remove('active'));
+
+  const map = {
+    1: 'btn-mult-1',
+    5: 'btn-mult-5',
+    10: 'btn-mult-10',
+    'max': 'btn-mult-max'
+  };
+
+  const activeBtn = document.getElementById(map[value]);
+  if (activeBtn) {
+    activeBtn.classList.add('active');
+  }
+}
 
 function loadGame() {
   const data = localStorage.getItem('clickerSave');
@@ -250,6 +310,7 @@ function closeOfflinePopup() {
   document.getElementById('offline-popup').classList.add('hidden');
 }
 
+setBuyMultiplier(1);
 
 setInterval(saveGame, 500); // каждые 0.5 секунды
 

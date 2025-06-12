@@ -13,7 +13,7 @@ class AutoClicker {
   }
 
   get incomePerSecond() {
-    return this.count * this.baseIncome * this.level;
+  return Math.floor(this.count * this.baseIncome * this.level);
   }
 
   get price() {
